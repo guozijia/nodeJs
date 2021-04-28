@@ -24,6 +24,11 @@ class UserService {
         const [res] = await connection.execute(statement, [avatarUrl, userId])
         return res
     }
+    async updateCover (coverUrl, workId) {
+        const statement = `UPDATE myworks SET cover_url = ? WHERE id = ?`
+        const [res] = await connection.execute(statement, [coverUrl, workId])
+        return res
+    }
     async getUserInfo (userId) {
         const statement = `SELECT u.id id ,u.name name,u.avatar_url avatarUrl,
                             (SELECT COUNT(*) FROM moment m WHERE m.user_id = u.id ) momentCount

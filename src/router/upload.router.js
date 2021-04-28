@@ -8,12 +8,17 @@ const {
 const {
     avatarHandel,
     picHandel,
-    picResize
+    coverHandel,
+    workPicHandel,
+    picResize,
+    workPicResize
 } = require('../middleware/upload.middleware')
 
 const {
     saveAvatar,
-    savePicInfo
+    savePicInfo,
+    saveCover,
+    saveWorkPic
 } = require('../controller/upload.controller')
 
 const uploadRouter = new Router({ prefix: '/upload' })
@@ -21,4 +26,7 @@ const uploadRouter = new Router({ prefix: '/upload' })
 uploadRouter.post('/avatar', verifyAuth, avatarHandel, saveAvatar)// 上传头像
 uploadRouter.post('/pic', verifyAuth, picHandel, picResize, savePicInfo) //上传多个
 
-module.exports = uploadRouter; 
+uploadRouter.post('/cover', verifyAuth, coverHandel, saveCover)
+uploadRouter.post('/workPic', verifyAuth, workPicHandel, workPicResize,saveWorkPic)
+
+module.exports = uploadRouter;

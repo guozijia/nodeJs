@@ -16,7 +16,7 @@ class UserContorller {
         //console.log(res)
         ctx.response.set('content-type', res.mimetype) // 设置浏览器响应类型
         ctx.body = fs.createReadStream(`./uploads/avatar/${res.filename}`)//下载文件
-    }
+    } 
     async getUserInfo(ctx,next){
         
         const {id} = ctx.user

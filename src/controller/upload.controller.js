@@ -18,21 +18,48 @@ class UploadController {
             message: '上传头像成功~'
         }
     }
+    
+    async saveCover (ctx, next) {
+        const { mimetype, filename, size } = ctx.req.file
+        const { workId } = ctx.query
+        const res = await service.saveCover(filename,mimetype,size,workId)
+
+        const coverUrl = `${APP_HOST}:${APP_PORT}/mywork/${workId}/cover/${filename}`
+        await userservice.updateCover(coverUrl, workId)
+
+        ctx.body = {
+            code: 200,
+            message: '上传封面成功~'
+        }
+    }
+
     async savePicInfo (ctx, next) {
- 
+
         const { id } = ctx.user
         const { momentId } = ctx.query
-        
+
         //获取文件信息
-        const files = ctx.req.files 
-        console.log(files)
+        const files = ctx.req.files
+        //
+        //console.log(files)
 
         //将文件信息保存到数据库
         for (let file of files) {
             const { mimetype, filename, size } = file
             await service.createfile(filename, mimetype, size, momentId, id)
         }
- 
+
+        ctx.body = "上传完成"
+    }
+    async saveWorkPic (ctx, next) {
+        const { workId } = ctx.query
+        const { id } = ctx.user
+        const files = ctx.req.files
+
+        for (let file of files) {
+            const { mimetype, filename, size } = file
+            await service.createWorkfile(filename, mimetype, size, workId)
+        }
         ctx.body = "上传完成"
     }
 }
