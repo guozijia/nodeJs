@@ -1,6 +1,8 @@
 const service = require('../service/mywork.service')
 const fileservice = require('../service/upload.service')
 const fs = require('fs')
+const send = require('koa-send')
+
 class MyworkController {
     async create (ctx, next) {
         const { title, content, type } = ctx.request.body;
@@ -26,11 +28,16 @@ class MyworkController {
         const res = await service.getWorkDetail(workId)
         ctx.body = res
     }
-    async workpic (ctx, next){
+    async workpic (ctx, next) {
         let { filename } = ctx.params
         const [res] = await fileservice.getFileInfoByWorkPicName(filename)
         ctx.response.set('content-type', res.mimetype)
         ctx.body = fs.createReadStream(`./uploads/myworks/${filename}`)
+    }
+    async download (ctx) {
+        const path = "./uploads/resume/郭子嘉(web前端开发).pdf"
+        ctx.attachment(path)
+        await send(ctx, path) 
     }
 }
 

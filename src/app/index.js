@@ -18,7 +18,7 @@ app.use(bodyParser()) //json解析中间件
 
 app.use(cors())
 
-useRoutes(app)
+useRoutes(app) 
 
 
 // app.use(userRouter.routes());
